@@ -72,8 +72,8 @@ export const useAddReaction = () => {
 export function Posts() {
     const { data: posts, error, isLoading } = usePosts();
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    if (isLoading) return React.createElement('div', null, 'Loading...');
+    if (error) return React.createElement('div', null, `Error: ${error.message}`);
 
     return React.createElement(
         'div',
