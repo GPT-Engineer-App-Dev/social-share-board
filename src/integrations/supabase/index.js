@@ -75,30 +75,28 @@ export function Posts() {
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
 
-    return (
-        <div>
-            {posts.map(post => (
-                <div key={post.id}>
-                    <p>{post.body}</p>
-                    <Reactions postId={post.id} />
-                </div>
-            ))}
-        </div>
+    return React.createElement(
+        'div',
+        null,
+        posts.map(post => React.createElement(
+            'div',
+            { key: post.id },
+            React.createElement('p', null, post.body),
+            React.createElement(Reactions, { postId: post.id })
+        ))
     );
 }
 
 export function Reactions({ postId }) {
     const { data: reactions, error, isLoading } = useReactions(postId);
 
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    if (isLoading) return React.createElement('div', null, 'Loading...');
+    if (error) return React.createElement('div', null, `Error: ${error.message}`);
 
-    return (
-        <div>
-            {reactions.map(reaction => (
-                <span key={reaction.id}>{reaction.emoji}</span>
-            ))}
-        </div>
+    return React.createElement(
+        'div',
+        null,
+        reactions.map(reaction => React.createElement('span', { key: reaction.id }, reaction.emoji))
     );
 }
 
@@ -113,12 +111,12 @@ export function AddPost() {
         addPost.mutate({ title, body, author_id });
     };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <input name="title" placeholder="Post title" />
-            <input name="body" placeholder="Post body" />
-            <button type="submit">Add Post</button>
-        </form>
+    return React.createElement(
+        'form',
+        { onSubmit: handleSubmit },
+        React.createElement('input', { name: 'title', placeholder: 'Post title' }),
+        React.createElement('input', { name: 'body', placeholder: 'Post body' }),
+        React.createElement('button', { type: 'submit' }, 'Add Post')
     );
 }
 
@@ -130,10 +128,10 @@ export function AddReaction({ postId }) {
         addReaction.mutate({ post_id: postId, emoji, user_id });
     };
 
-    return (
-        <div>
-            <button onClick={() => handleReaction('👍')}>Like</button>
-            <button onClick={() => handleReaction('👎')}>Dislike</button>
-        </div>
+    return React.createElement(
+        'div',
+        null,
+        React.createElement('button', { onClick: () => handleReaction('👍') }, 'Like'),
+        React.createElement('button', { onClick: () => handleReaction('👎') }, 'Dislike')
     );
 }
